@@ -17,7 +17,7 @@ const server = restify.createServer({
 });
 const middleware = require('../src/server.jsx')();
 
-server.get(/^\/(?!(?:api|assets)\/).*/, middleware);
+server.get(/^\/(?!api|assets|.+\.ico).*/, middleware);
 
 server.get(/^\/assets\/.*/, restify.serveStatic({
   directory: path.resolve(__dirname, '..'),
