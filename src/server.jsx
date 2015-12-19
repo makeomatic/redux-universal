@@ -40,7 +40,7 @@ export default function middleware(config = {}) {
       };
       const store = createStore(history, { meta });
 
-      store.resolve(store.dispatch, renderProps.components, renderProps.params).then(state => {
+      store.resolve(renderProps.components, renderProps.params).then(state => {
         const exposed = 'window.__APP_STATE__=' + serialize(state) + ';';
         const page = renderToString(
           <Provider store={store}>

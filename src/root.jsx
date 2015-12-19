@@ -17,8 +17,8 @@ export default class App extends Component {
     store: PropTypes.object.isRequired,
   };
 
-  static fetch(dispatch) {
-    dispatch(dummy(30));
+  static fetch({ dispatch }, params) {
+    dispatch(dummy(parseInt(params.id || 30, 10)));
   }
 
   render() {
@@ -26,6 +26,7 @@ export default class App extends Component {
       <div>
         <DocumentMeta {...this.props.meta.app} />
         <h1>Hello world: {this.props.timeout}</h1>
+        <div>{this.props.children}</div>
       </div>
     );
   }
