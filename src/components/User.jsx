@@ -1,30 +1,31 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { multiply } from '../actions/user';
+import { multiply } from '../modules/user';
+import { fetch } from '../redux-prefetch';
 
-@connect(
-  state => ({ multiply: state.user.multiply })
-)
+function prefetch({ dispatch, getState, waitFor }, params) {
+  return waitFor('root').then(() => {
+    return dispatch(multiply(getState().user.result, params.id));
+  });
+}
+@fetch('user', prefetch)
+@connect(state => ({ multiply: state.user.multiply }))
 export default class User extends Component {
   static propTypes = {
     multiply: PropTypes.number.isRequired,
+    userId: PropTypes.number.isRequired,
+    params: PropTypes.object.isRequired,
   };
 
   static contextTypes = {
     store: PropTypes.object.isRequired,
   };
 
-  static fetch({ getState, dispatch }, params) {
-    // option 2: multiply action requires state data to be fetched?
-    return getState().user.promises.then(() => {
-      dispatch(multiply(getState().user.result, params.id));
-    });
-  }
-
   render() {
     return (
       <div>
-        <h2>Child: {this.props.multiply}</h2>
+        <h2>Child: {this.props.userId}</h2>
+        <div>Multiply: {this.props.multiply}</div>
       </div>
     );
   }
